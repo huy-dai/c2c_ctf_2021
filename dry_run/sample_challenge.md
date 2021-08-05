@@ -47,6 +47,8 @@ Kafka on the Shore
 
 If we take the first letter of each word we can see they spell out: "FLAG BY THE BOOK"
 
+Flag: flag{by_the_book}
+
 ## Challenge Problem 2
 
 I took Database Systems last semester and found this message on the back of the exam, I don't think it has something to do with the course
