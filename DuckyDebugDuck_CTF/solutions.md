@@ -54,8 +54,11 @@ Flag: flag{Rs4_1s_s1mpl3_t0_us3_4nd_4t7ack}
 ## Secret Bits
 
 https://www.hackerfactor.com/blog/index.php?/archives/894-PNG-and-Hidden-Pixels.html
+
 https://fotoforensics.com/analysis.php?id=5725e300b5d6d30a7266abd477eb20cf6422a30d.189136
+
 https://github.com/Hedroed/png-parser
+
 https://www.google.com/search?channel=fs&client=ubuntu&q=Extract+PNG+chunks
 
 
