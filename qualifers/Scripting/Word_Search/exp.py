@@ -119,7 +119,4 @@ for word in words:
 print(r.recv())
 #r.interactive()
 
-
-
-
 r.close()

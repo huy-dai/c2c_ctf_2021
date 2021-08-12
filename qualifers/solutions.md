@@ -1,4 +1,13 @@
-## My solutions for the C2C CTF Qualifiers Round (25 Challenges)
+## My solutions for the C2C CTF Qualifiers Round
+
+The following are solutions to the problems that I was able to solve during the 24-hour period which the CTF challenges were open. A separate writeup will include solutions to problems which I learn to solve about after the qualifiers round had concluded.
+
+Total Points: 2600
+
+Number of problems solved: 11 out of 30
+
+Rank: 10th out of 372 participants
+
 
 ## GrOops Policy
 
@@ -388,3 +397,74 @@ That is, until I decided to open up the pixel map using Python `PIL.Image` libra
 ![Cleaned up Image](./Stego/Invisible_Ink/new_image.png)
 
 Flag: FLAG{l3m0n_juic3}
+
+## Word Search
+
+Category: Scripting
+
+Points: 100
+
+With about one hour left in the competition, I decided that I had a better chance of finishing this problem, which was mainly tedious in terms of programming a crossword solver, than solving some of the remaining challenges.
+
+When we connect to the `nc` server, we get something like the following:
+
+~~~console
+$ nc word-search.ctf.fifthdoma.in 4243
+Remaining words:
+begin
+young
+river
+between
+through
+second
+could
+though
+cause
+those
+above
+country
+small
+about
+learn
+build
+three
+friend
+mountain
+leave
+   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14
+ 0 e  r  l  y  p  k  q  s  o  e  s  o  h  t  t
+ 1 y  l  e  a  v  e  e  y  l  m  w  s  r  u  n
+ 2 d  e  x  y  s  a  r  d  n  o  c  e  s  n  e
+ 3 n  a  e  o  n  t  d  r  a  t  q  o  f  c  e
+ 4 r  r  g  e  n  o  c  k  e  c  e  a  r  a  w
+ 5 y  n  w  u  r  h  l  o  j  v  q  h  m  u  t
+ 6 f  o  o  q  g  h  k  p  u  h  i  o  y  s  e
+ 7 a  c  u  u  d  m  t  g  g  l  u  r  m  e  b
+ 8 j  q  o  n  z  f  l  u  x  n  d  a  a  f  n
+ 9 l  h  l  u  g  h  o  f  t  d  l  n  b  r  r
+10 t  k  i  i  u  r  a  a  d  l  i  s  o  i  o
+11 b  l  v  b  h  b  i  l  d  g  b  x  v  e  z
+12 y  e  w  t  o  n  i  b  e  j  i  e  e  n  h
+13 m  e  x  u  c  u  c  b  a  f  n  n  n  d  v
+14 t  d  t  q  b  e  a  o  y  h  r  e  a  n  p
+Input start coordinate of word, e.g: 1, 2 for row 1 column 2
+1, 4
+Input end coordinate of word, e.g: 3, 4 for row 3 column 4
+3,5
+Incorrect word found: vat
+Input start coordinate of word, e.g: 1, 2 for row 1 column 2
+Too slow
+~~~ 
+
+The prompt gives us a list of words and then a crossword grid to search. We solve each word by providing a starting and ending coordinate pair (row, column). There is a time limit on how long we have to submit the solutions, approximately 15 seconds.
+
+I employed the following process to solve the crossword in my Python script:
+
+1. Open a remote connection with the server and retrieve the prompt
+2. Parse the prompt for the word list and the crossword grid
+3. Convert the crossword grid into a numpy matrix for easier manipulation
+4. For each word, iterate through all the possible column, row, and diagonal splices of the crossword grid
+5. If a word is found (whether reading from left-to-right or right-to-left), convert its index within the spliced line to actual coordinate indices
+6. Send the starting and ending coordinate to the server until all words has been found.
+
+There are numerous places where my code could have been better optimized or refactored to be more neat, although given the generous time constraint this really didn't matter. You can find the full script under `exp.py`.
