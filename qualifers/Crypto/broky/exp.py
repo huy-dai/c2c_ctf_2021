@@ -46,6 +46,20 @@ assert(d_old==d)
 assert(p*q==n)
 assert(e*d%phi==1)
 
+cipher = None
+
+with open("./killswitch","rb") as f:
+    cipher = bytes_to_long(f.read())
+print("Ciphertext:",cipher)
+
+#Decrypt
+plain = long_to_bytes(pow(cipher,d,n))
+print("Plain:",plain)
+
+out = open('output.enc', 'wb')
+out.write(plain)
+out.close()
+
 #Doesn't work due to p==q
 #public_key = RSA.construct([n,e,d,p,q])
 #print(public_key)

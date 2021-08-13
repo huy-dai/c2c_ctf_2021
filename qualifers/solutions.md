@@ -468,3 +468,4 @@ I employed the following process to solve the crossword in my Python script:
 6. Send the starting and ending coordinate to the server until all words has been found.
 
 There are numerous places where my code could have been better optimized or refactored to be more neat, although given the generous time constraint this really didn't matter. You can find the full script under `exp.py`.
+
