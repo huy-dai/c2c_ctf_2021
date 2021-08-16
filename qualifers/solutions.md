@@ -78,7 +78,7 @@ Did you ever see such a sight in your life,
 As three blind mice?
 ~~~
 
-except the last line has been altered to say "flag{three blind mice}
+except the last line has been altered to say "flag{three blind mice}"
 
 Flag: flag{three blind mice}
 
@@ -176,7 +176,23 @@ With a bit of research, we figure out that this is naive recursive implementatio
 
 The fastest method to solve this problem involves using dynamic programming and tabular approaches. There are libraries which can help us find the longest possible length, including [pycls](https://pypi.org/project/pylcs/), however, we are more interested in the resulting text rather than the int solution.
 
-I found a code snippet that prints out all of the longest subsequence, [here](https://www.geeksforgeeks.org/printing-longest-common-subsequence-set-2-printing/) and is implemented in `exp2.py`. Unfortunately that gave us over 38 solutions to work with. I had to copy and paste each one by hand to the competition page to see which is the right answer. It did happen, eventually...
+I found a code snippet that prints out all of the longest subsequence, [here](https://www.geeksforgeeks.org/printing-longest-common-subsequence-set-2-printing/) and is implemented in [exp2.py](Scripting/Speed_Me_Up_Scotty_2/exp2.py). Unfortunately that gave us over 38 solutions to work with. I had to copy and paste each one by hand to the competition page to see which is the right answer. It did happen, eventually...
+
+***Alternative, and better, solution:**
+
+From Discord, `Social_Anthrax` suggested a very nifty answer of using the `lru_cache` wrapper from `functools` library to create a hash table which stores the result of function calls to `my_func2` so that we could save time on not doing LCS calculations on two strings that we already have a precomputated value for. Initially I was very skeptical of the performance boost it could provide, but it turned out to have simplify the computation to almost instantaneous.
+
+~~~py
+import functools
+
+@functools.lru_cache(maxsize=128, typed=False)
+def my_func2_inner(x, y, a, b):
+    if a == 0 or b == 0:
+        return 0, ""
+[...]
+~~~
+
+The output gives the same result as the one we got before.
 
 Flag: flag{CCBCBCBBBACACBBBCCAABBAABACAAACBBCCCAACCA}
 
@@ -372,7 +388,7 @@ e8989DAQ
 
 After a bit of thought, I found that the "keys" are possible extensions for the `pastebin` website (e.g., <https://pastebin.com/pR4YY719>). After trying the first few entries we see we get back a "This page is no longer available." from Pastebin.
 
-I quickly wrote a Python script to go through all the "keys" values and see which ones do not return the error. We eventually get a hit on <https://pastebin.com/rTA163S2>.
+I quickly wrote a Python script to go through all the "keys" values and see which ones do not return the error, found at [exp.py](./OSINT/Credit_System/exp.py). We eventually get a hit on <https://pastebin.com/rTA163S2>.
 
 After entering the commented out password to the pastebin site, we get the following message:
 
@@ -467,5 +483,5 @@ I employed the following process to solve the crossword in my Python script:
 5. If a word is found (whether reading from left-to-right or right-to-left), convert its index within the spliced line to actual coordinate indices
 6. Send the starting and ending coordinate to the server until all words has been found.
 
-There are numerous places where my code could have been better optimized or refactored to be more neat, although given the generous time constraint this really didn't matter. You can find the full script under `exp.py`.
+There are numerous places where my code could have been better optimized or refactored to be more neat, although given the generous time constraint this really didn't matter. You can find the full script under [exp.py](Scripting/Word_Search/exp.py).
 

@@ -4,7 +4,14 @@ import numpy as np
 from pwnlib.util.sh_string import test_all
 
 def trans_diag(diag_num,b_i,e_i,forward=True):
-
+    '''
+    Given a numpy diagonal number,
+    the starting index and ending index within that
+    diagonal, and a Boolean denoting which diagonal
+    to read from, return a list of tuples of the starting
+    and ending index.
+    '''
+    print("Diagonal params:",diag_num,b_i,e_i,forward)
     d_start = None
     start = None
     end = None
@@ -17,7 +24,7 @@ def trans_diag(diag_num,b_i,e_i,forward=True):
         end = (d_start[0]+e_i, d_start[1]+e_i)
     else:
         if diag_num <= 0:
-            d_start = (0, abs(diag_num))
+            d_start = (0, diag_num+14)
         else:
             d_start = (diag_num, 14)
         start = (d_start[0]+b_i,d_start[1]-b_i)
@@ -92,6 +99,7 @@ for word in words:
                 else:
                     start_pos, end_pos = trans_diag(i, diag.index(word_rev)+len(word_rev)-1, diag.index(word_rev))
                 print("I found in diagonal!")
+                print(start_pos,end_pos)
                 found = True
                 break
         #Backward diagonal
@@ -103,6 +111,7 @@ for word in words:
                 else:
                     start_pos, end_pos = trans_diag(i, diag.index(word_rev)+len(word_rev)-1, diag.index(word_rev), False)
                 print("I found in other diagonal!")
+                print(start_pos,end_pos)
                 found = True
                 break
     if not found:
@@ -116,7 +125,6 @@ for word in words:
         r.sendline(end.encode('utf-8'))
         res = r.recv().decode('utf-8')
         print(res)
-print(r.recv())
 #r.interactive()
 
 r.close()

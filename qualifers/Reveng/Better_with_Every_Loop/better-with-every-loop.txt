@@ -1,0 +1,30 @@
+Dump of assembler code for function main:
+   0x0000555555555135 <+0>:     push   rbp
+   0x0000555555555136 <+1>:     mov    rbp,rsp
+   0x0000555555555139 <+4>:     sub    rsp,0x10
+=> 0x000055555555513d <+8>:     mov    DWORD PTR [rbp-0x8],0x1
+   0x0000555555555144 <+15>:    jmp    0x55555555516b <main+54>
+   0x0000555555555146 <+17>:    mov    DWORD PTR [rbp-0x4],0x1
+   0x000055555555514d <+24>:    jmp    0x555555555165 <main+48>
+   0x000055555555514f <+26>:    add    DWORD PTR [rbp-0x8],0x1
+   0x0000555555555153 <+30>:    mov    eax,DWORD PTR [rbp-0x8]
+   0x0000555555555156 <+33>:    imul   eax,DWORD PTR [rbp-0x8]
+   0x000055555555515a <+37>:    cdq    
+   0x000055555555515b <+38>:    idiv   DWORD PTR [rbp-0x4]
+   0x000055555555515e <+41>:    mov    DWORD PTR [rbp-0x8],eax
+   0x0000555555555161 <+44>:    add    DWORD PTR [rbp-0x4],0x1
+   0x0000555555555165 <+48>:    cmp    DWORD PTR [rbp-0x4],0x4
+   0x0000555555555169 <+52>:    jle    0x55555555514f <main+26>
+   0x000055555555516b <+54>:    mov    eax,DWORD PTR [rbp-0x8]
+   0x000055555555516e <+57>:    and    eax,0xf
+   0x0000555555555171 <+60>:    test   eax,eax
+   0x0000555555555173 <+62>:    jne    0x555555555146 <main+17>
+   0x0000555555555175 <+64>:    mov    eax,DWORD PTR [rbp-0x8]
+   0x0000555555555178 <+67>:    mov    esi,eax
+   0x000055555555517a <+69>:    lea    rdi,[rip+0xe83]        # 0x555555556004
+   0x0000555555555181 <+76>:    mov    eax,0x0
+   0x0000555555555186 <+81>:    call   0x555555555030 <printf@plt>
+   0x000055555555518b <+86>:    mov    eax,0x0
+   0x0000555555555190 <+91>:    leave  
+   0x0000555555555191 <+92>:    ret    
+End of assembler dump.
