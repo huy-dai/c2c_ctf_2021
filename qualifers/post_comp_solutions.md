@@ -2,7 +2,7 @@
 
 After the qualfiers had concluded, I saw that people were sharing their solutions for different problems. I decided to take advantage of this opportunity to go over challenges that I didn't get during the 24-hour period and see what I could learn. 
 
-In my writeups, I will also try to highlight what I had gotten to on my own and how I was able to complete the challenge with others help.
+In my writeups, I will also try to highlight what I had gotten to on my own and how the rest of the problems could be solved according to what other people have shared on the C2C CTF Discord.
 
 ## Broky
 
@@ -143,7 +143,7 @@ Checking...
 Good attempt, but no.
 ~~~
 
-If we look up the [error](https://stackoverflow.com/questions/13781216/meaning-of-too-many-arguments-error-from-if-square-brackets), we see that this is happening because bash is interpreting our input as a literal bash variable. Thus, `*` will get interpreted as all files in the current directory, which is why we get back the error of `two many arguments`. 
+If we look up the [error](https://stackoverflow.com/questions/13781216/meaning-of-too-many-arguments-error-from-if-square-brackets), we see that this is happening because bash is interpreting our input as a literal bash variable. Thus, `*` will get interpreted as all files in the current directory, which is why we get back the error of `too many arguments`. 
 
 Assuming that the program is performing some equality check like `[ $input -eq FLAG ]`, we can use the OR (-o) and EQ (-eq) conditionals to get it to always return True. Note that if the structure had been reversed like `[ FLAG -eq $input]` we would have needed to flip our conditionals around as well.
 
@@ -290,7 +290,7 @@ From the provided ReadMe, we see that the `android-backup-processor` tool can th
 $ java -jar abp.jar [-debug] [-useenv=yourenv] unpack <backup.ab> <backup.tar> [password]
 ~~~
 
-We provided "1234567" as the \[password\] and was given a .tar file. Bringing this back to Ubuntu, we can extract it as normal. Inside, we see a normal directory structure with folders for 'Android', 'Telegram', 'Pictures', etc. We can search for the interesting files by doing `ls -a -R` (-a for all files, -R for recursive) or `find -type f`. In my initial look I had completely missed the `.cached` file, which had a number of .wav files with Morse code signals in them. Using a Morse sound file decoder tool we find that all except ones were just fake messages.  The real .wav file, however, which was also the largest one in size, had the following message for us:
+We provided "1234567" as the \[password\] and was given a .tar file. Bringing this back to Ubuntu, we can extract it as normal. Inside, we see a normal directory structure with folders for 'Android', 'Telegram', 'Pictures', etc. We can search for the interesting files by doing `ls -a -R` (-a for all files, -R for recursive) or `find -type f`. In my initial look I had completely missed the `.cached` file, which had a number of .wav files with Morse code signals in them. Using a Morse sound file decoder ([ref](https://morsecode.world/international/decoder/audio-decoder-adaptive.html)) tool we find that all except ones were just fake messages.  The real .wav file, however, which was also the largest one in size, had the following message for us:
 
 ~~~text
 I A M L E A V I N G T O L O N D O N F O R F E W M O N T H T H E I M A G E I S E M B E D D E D W I T H A T E X T F I L E C O N T A I N S M Y S E C R E T K E E P I T W I T H Y O U T H E P A S S W O R D I S I K N O W M A G I C A L L I N S M A L L L E T T E R E X C E P T I
