@@ -155,3 +155,26 @@ B 1042188408
 b'sensitive.txt\n'
 b'FLAG{wh4dy4_m3an_32_b1t5_1s_1n53cur3}\n
 ~~~
+
+Flag: flag{{wh4dy4_m3an_32_b1t5_1s_1n53cur3}
+
+## Welcome to my crib
+
+Category: Crypto
+Points: 600
+
+Prompt: We have intercepted encrypted communications between actors. From previous behaviour analysis, we found that all messages were encrypted using a repeating shared 16 byte XOR key, and the first two messages were testing whether the channel is stable, and consisted of common lowercase English words separated by a space. We may know at least some of the ciphertext. Figure out how to recover the last message, which consists of only the flag.
+
+File: [enc](Welcome_to_my_Crib/xor_encrypted_messages.txt)
+
+Solution: From what the problem tells us the first two lines encrypt all lowercase words separated by spaces, while the third line encrypts the flag. We know that XOR encryption is reversible by taking the ciphertext ^ key to get the plaintext.
+
+Initially I jumped on a script that I created for the CryptoPals Set 1 Challenge 6 problem which deals with this same problem. It attempts to iterative "guess" the nth character of key by pulling all the nth characters from the ciphertext, XOR-ing it with the guess key and check if they result in a printable ASCII character. The character which results in the most printable character is chosen for the key. However, my code ended up giving a lot of gibberish results.
+
+After an hour of trying with custom code I landed on this website: <https://www.dcode.fr/xor-cipher>
+
+I found that putting down the second line of the ciphertext and asking the tool to guess the key yielded in an exact decryption (no weird characters hanging about). This is the key in hex format: `12810f09b219ad5f1053147f20a29d`
+
+I then used the key and XOR-ed with the third line to get back the flag.
+
+flag: flag{x0r_a1nt_g00d_en0ugh}
