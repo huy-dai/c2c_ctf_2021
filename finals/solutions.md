@@ -178,3 +178,90 @@ I found that putting down the second line of the ciphertext and asking the tool 
 I then used the key and XOR-ed with the third line to get back the flag.
 
 flag: flag{x0r_a1nt_g00d_en0ugh}
+
+## Shortwalk aint it
+
+Category: Stego
+Points: 50
+
+Even though it was only a 50 points question, this stego problem gave us a lot of trouble since we weren't able to decipher what exactly was being hidden in the image. Some of our initial attempts including running pngcheck (which found some corruption) -> using PCRT to fix corrupted chunks and using stegonline to examine the image.
+
+File: [stego.png](Shortwalk_Aint_It/stego.png)
+
+After some work, we figured out that there was a zip file hidden in the image which can be extracted through binwalk, and when you run `unzip 5400A.zip` it prints out the Morse code and prompts for a password. We can guess that the folder simply wants us to decode the message and return it as the password, e.g. "flag(moorseisstillcool)". 
+
+The first few bytes of the notes.txt file contains the flag.
+
+Flag: flag{less_walking_more_lerking}
+
+## b"00000001"
+
+Category: Stego
+Points: 150
+
+Prompt: The sound file has strange distorations when trying to listen to it. How suspicious. Uses file from Shortwalk aint it
+
+Solution: If we take a look at the hexdump of the [notes.txt](Shortwalk_Aint_It/_stego.png.extracted/notes.txt) we can see that after the cleartext flag there is actually a .wav file. Deleting the flag from the file allows us to open up the music file. Based on the problem's name we can assume it has do to something with hiding information in the Least Significant Bit (LSB) of the file. I tried a tool called WavSteg to extract information using this method but it only showed garbage output. After a bit research I found a tutorial with a Python script to do this: <https://medium.com/analytics-vidhya/get-secret-message-from-audio-file-8769421205c3>
+
+Altogether the script looks like this: 
+
+~~~py
+#!/usr/bin/python
+import wave, os, struct
+
+wav= wave.open("notes.wav", mode='rb')
+print (wav.getparams())
+
+
+frame_bytes = bytearray(list(wav.readframes(wav.getnframes())))
+shorts = struct.unpack('H'*(len(frame_bytes)//2), frame_bytes)
+    
+# Get all LSB's
+extractedLSB = ""
+for i in range(0, len(shorts)):
+        extractedLSB += str(shorts[i] & 1 )# divide strings into blocks of eight binary strings
+# convert them and join them back to string
+string_blocks = (extractedLSB[i:i+8] for i in range(0, len(extractedLSB), 8))
+decoded = ''.join(chr(int(char, 2)) for char in string_blocks)
+print(decoded[:200].encode('utf-8'))
+
+wav.close()
+~~~
+
+The flag can be found at the beginning of the output
+
+Flag: flag{golF_grueL_teA_muG}
+
+## Tall Orders
+
+Category: Stego
+Points: 300
+
+Prompt: We've tried every known steganography tool at this file but we can't find any hidden data. We know there is something more to this image than what we can see. Uses file from Shortwalk aint it
+
+Solution: After extracting the data from the original `stego.png`, we get an image named `notStandard.png`. Running the `identify` command on it from ImageMagick yields the following result:
+
+`identify -verbose notStandard.png`
+![Screenshot](Tall_Orders/screenshot.png)
+
+We can see there is extra data embedded in an IDAT chunk. In that case, we can try to extend the height of the png to show the hidden data, which can be done by modifying the IHDR section.
+
+Opening up the file in a tool called [PNG_Analyzer.exe](Tall_Orders/PNG_Analyzer.exe), we can increase the image height to be 500 pixels. Original tool link: https://github.com/albusshin/hacker.org/blob/master/PNG_Analyzer.exe
+![Screenshot2](Tall_Orders/png_analyzer.png)
+
+Opening up the image we see the flag is at the bottom.
+
+![Sol](Tall_Orders/notStandard2.png)
+
+Flag: flag{it_just_works}
+
+## Hear Words See Sound
+
+Category: Stego
+Points: 250
+
+Prompt: A report recently came in from an allied intelligence source about the exfiltration method detected has often been paired with a visual exfiltration method. Find the information that is encoded visually. Uses File from Shortwalk aint it
+
+Solution: Using the `notes.wav` file we got from the original `stego.png`, we can inspect it in Audacity and turn on the Spectogram view to be able to 'see' the audio file. This is done by clicking on the Channel name and choosing the "spectogram" option.
+
+Flag: flag{i_can_see_sound}
