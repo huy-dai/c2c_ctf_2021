@@ -265,3 +265,27 @@ Prompt: A report recently came in from an allied intelligence source about the e
 Solution: Using the `notes.wav` file we got from the original `stego.png`, we can inspect it in Audacity and turn on the Spectogram view to be able to 'see' the audio file. This is done by clicking on the Channel name and choosing the "spectogram" option.
 
 Flag: flag{i_can_see_sound}
+
+## Y2
+
+Category: Scripting
+Points: 50 
+
+Prompt: What is the value of y2?
+
+~~~sql
+with
+    t1(x1, x2) as (select 1, 2),
+    t2(y1, y2) as (
+      select x1 * 2, x2 * 2
+      from t1
+    )
+  select *
+  from t1, t2
+~~~
+
+Flag will be in the format FLAG{#}
+
+Solution: This is basic SQL syntax. We can see t2 simply multiples the values of t1 by 2, so y2 will be 4.
+
+Flag: flag{4}
