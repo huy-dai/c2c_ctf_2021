@@ -289,3 +289,49 @@ Flag will be in the format FLAG{#}
 Solution: This is basic SQL syntax. We can see t2 simply multiples the values of t1 by 2, so y2 will be 4.
 
 Flag: flag{4}
+
+## SNMP Shenanigans
+
+Category: Analysis
+Points: 50
+
+Prompt: A review of your captured network traffic has revealed that someone has been retrieving information from your super secret server. It looks like someone accidentally configured the SNMP community to defaults (who needs change managment processes).
+
+Find the information retrieved and translate the requested OID number to a name, so we can prevent the information from being leaked.
+
+Submit the flag in format FLAG{oid_value}. For example if the OID number translates to sysFlag, and the information retrieved is "here_be_the_flag", then the flag will be FLAG{sysFlag-here_be_the_flag}.
+
+Solution: Inspecting the SNMP packet capture, we see that there was a get-request sent for 1.3.6.1.2.1.1.6.0 with the response `you_are_here_we_are_not`. Looking up the ObjectID we find this code corresponds to sysLocation. Putting the two together we get the flag:
+
+Flag: flag{sysLocation-you_are_here_we_are_not}
+
+
+# Tunnels
+
+Category: Analysis
+Points: 100
+
+Prompt: A suspicious device was discovered on a defence network. Some traffic was captured before it was removed from the network in order to determine what it was doing. Can you take a look?
+
+Solution: Running the `strings` command and grepping for the flag on the pcap file gave us the following result:
+
+~~~sh
+➜ strings out.pcap | grep "FLAG" -3
+"{V\
+ut92P
+ZPJ9nw}P
+FLAG{1s_th3r3
+FLAG{1s_th3r3
+AeN[P
+6AeN[
+DQ#e
+~~~
+
+There is still some parts of the flag that we are missing. We can find the packets that contains the starting flag string by specifying `FLAG{1s_th3r3` as part of the Wireshark Ctrl+F find for strings. Using that we discover the mysterious device were communicating over ICMP packets, and from there we were able to locate the rest of the flag by viewing the successive packets.
+
+Flag: flag{1s_th3r3_4n_3ch0_1n_h3r3}
+
+## Event Log Diving
+
+Category: Analysis
+Points: 50
