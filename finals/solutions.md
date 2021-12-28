@@ -335,3 +335,52 @@ Flag: flag{1s_th3r3_4n_3ch0_1n_h3r3}
 
 Category: Analysis
 Points: 50
+
+Prompt: Your monitoring tools alert you of anomalous activity on one of your domain controllers. An initial review of the event log indicates that a user account may have been compromised. Use the event logs to determine what the common name of the technique performed was, the username (without the domain) of the perpetrator, and the service name of the victim. The flag should be in the format of FLAG{technique-victim-perpetrator}, with no spaces and all lower case. For example if Eve performed a password reset against Alice, the flag would be FLAG{passwordreset-alice-eve}.
+
+Solution: We are given an .evtx file, which can be opened with Windows Event Viewer. We can see that there are three types of events includes in the log which mainly relates to kerberos authentication. After a bit of research on different ways a user can attack Kerberos (e.g., pass-the-hash, pass-the-ticket) and how to detect them in an Event Log, we find this tutorial: https://adsecurity.org/?p=3458 , which recommends checking for event of id 4769 with unsecure encryption methods (e.g., MD5 hashing) for evidence of Kerberoasting attack. We found one entry that matches this description, for service name yolande (victim) and user terrence (perpretrator).
+
+Flag: flag{kerberoasting-yolande-terrence}
+
+
+## Apache Attack Helicopter
+
+Category: DFIR
+Points: 50
+
+Prompt: Looks like the attackers hacked one of our asset’s websites with some sort of injection attack! We’re aware they use custom built tools, does anything in the logs give away the name of the tool and when they first used it against the website? The flag format is: FLAG{toolname DD:HH:MM:SS}. For example if the tool "r0asted" was first executed on the 15th at 3 seconds past 1:20pm, the flag would be: FLAG{r0asted 15:13:20:03} 
+
+Solution: For this problem you just have to be a bit attentative when reading through the logs. The line of interest is line 432-435 in which we see the attackers running a GET request and passing that result to their tool called `xtreme-1nj3ctor`.
+
+~~~log
+49.255.52.198 - - [29/Sep/2020:12:56:33 +0800] "GET /?password=%3F HTTP/1.1" 200 5187 "-" "xtreme-1nj3ctor"
+49.255.52.198 - - [29/Sep/2020:12:56:36 +0800] "GET /?password=%27 HTTP/1.1" 200 5187 "-" "xtreme-1nj3ctor"
+49.255.52.198 - - [29/Sep/2020:12:56:36 +0800] "GET /?password=%22 HTTP/1.1" 200 5187 "-" "xtreme-1nj3ctor"
+49.255.52.198 - - [29/Sep/2020:12:56:36 +0800] "GET /?password=3156 HTTP/1.1" 200 5187 "-" "xtreme-1nj3ctor"
+~~~
+
+## 360 Invictus
+
+Category: DFIR
+Points: 50
+
+Prompt: What was the SQL injection string the attacker ended up using to gain access to the administrator area of the application? Wrap the URL decoded injection in FLAG{} tags. Uses the same access.log from 'Apache Attack Helicopter'
+
+Solution: There are a number of GET requests in which the attacker sent over guesses for the password in the form of URL-encoded SQL commands. Most of the guesses were relatively complicated commands but the one that caught my eye is the last one in the log (line 582):
+
+~~~log
+51.254.59.113 - - [30/Sep/2020:09:24:34 +0800] "GET /?password=x%27%20OR%20%271%27%3D%271%27%20--%20 HTTP/1.1" 302 227 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+~~~
+
+That translates to `x' OR '1'='1' -- `
+
+Flag: flag{x' OR '1'='1' -- }
+
+## Is this the Cryptoz
+
+Category: OSINT
+Points: 50
+
+Prompt: The attached files were being exfiltrated by a super duper malicious Advanced Persistent Trickster (APT). Can you please identify the name of the windows API used to encrypt data within one of the files? Provide the answer, with no spaces, and wrapped in FLAG{}. An example answer for the Windows Certificate Enrollment API would be FLAG{CertificateEnrollmentAPI} (Notice 'Windows' was not included in the flag).
+
+Solution: 
