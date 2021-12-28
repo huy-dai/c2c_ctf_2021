@@ -383,4 +383,24 @@ Points: 50
 
 Prompt: The attached files were being exfiltrated by a super duper malicious Advanced Persistent Trickster (APT). Can you please identify the name of the windows API used to encrypt data within one of the files? Provide the answer, with no spaces, and wrapped in FLAG{}. An example answer for the Windows Certificate Enrollment API would be FLAG{CertificateEnrollmentAPI} (Notice 'Windows' was not included in the flag).
 
-Solution: 
+Solution: If we inspect JSON data provided in the `Local State` file we can see it's storing the state of a Google Chrome browser instance. Searching up `chrome password encrypt windows api` we get the following [result](https://superuser.com/questions/146742/how-does-google-chrome-store-passwords), which tells us that Google Chrome passwords are encrypted using the CryptProtectData function inside the DPAPI (Data Protection Application Programming Interface) module, which is a cryptographic API built into Windows to allow for symmetric encryption of data. 
+
+Flag: flag{DataProtectionAPI}
+
+## So many cats about
+
+Category: RevEng
+Points: 550
+
+Prompt: We found this "Master Key" in logs of the commands run by the APT; "4be6d5984f65f1974960a60dd312fcc07104e09ba6c0a2b0797895d9439679b67306f5f7102c9a51da114873377fcaa13703114c744dbc02621de7bf11494dac". Can you use it, in combination with the files from Is this the Cryptoz, to retrieve the password of a compromised Twitter account? Provide the password wrapped in FLAG{}. An example answer would be FLAG{Password1}.
+
+Solution: Using Mimikatz (as hinted by problem'a name) we can crack the passwords stored in the `Local State` file with the provided Master Key. In Mimikatz, we ran the following command:
+
+`dpapi::chrome /in:"C:\Users\y-yam\Documents\ctf\Is this the Cryptoz\Login Data" /unprotect /masterkey:4be6d5984f65f1974960a60dd312fcc07104e09ba6c0a2b0797895d9439679b67306f5f7102c9a51da114873377fcaa13703114c744dbc02621de7bf11494dac /state:"C:\Users\y-yam\Documents\ctf\Is this the Cryptoz\Local State"`
+
+This will pass the Local State to Mimikatz, which will pull off the password hashes and attempt to decrypt them automatically for us.
+
+![MimikatzResults](Is_this_the_Cryptoz/SoManyCatsResult.png)
+
+Flag: flag{ThisIsAPassword123!}
+
