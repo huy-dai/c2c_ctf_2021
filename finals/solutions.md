@@ -404,3 +404,37 @@ This will pass the Local State to Mimikatz, which will pull off the password has
 
 Flag: flag{ThisIsAPassword123!}
 
+## Number Stations and Locations 1
+
+Category: Crypto
+Points: 100
+
+Prompt: Defence force intelligence analysts have picked up some code from what we believe is a Numbers Station. Can you figure out what it means? Flag format -- FLAG{messagehere}
+
+Solution: There was a provided image which contained Morse code that translated to `PH44JJ`
+
+Flag: flag{PH44JJ}
+
+## Number Stations and Locations 2
+
+Category: OSINT
+Points: 100
+
+Prompt: The Numbers Station also mentioned Grid Squares and something about a Lake. Can you use this information and the previous flag to find the name of the lake? Flag format -- FLAG{lake_name_with_underscores}. Uses the same code.jpg file from 'Numbers Stations and Locations 1'
+
+Solution: Grid squares describe a way of dividing up the earth into a number of squares, each with its own unique coordinates. Using this website <https://www.levinecentral.com/ham/grid_square.php> we are able to input in the flag from the first challenge (e.g. `PH44jj`) and find that the location is close to a Lake Argyle. For reference this is a lake in Western Australia.
+
+Flag: flag{lake_argyle}
+
+## Number Stations and Locations 3
+
+Category: OSINT
+Points: 350
+
+Prompt: This could be related to a report we had from a field operative in the nearby town of Wyndham. The operative said they had stashed a USB drive in a Store across the street from a "large, living dinsosaur". Who owns the store? Flag format -- FLAG{store_owners_name}. Uses the same code.jpg file from 'Numbers Stations and Locations 1'
+
+Solution: The town of Wyndham is not very far from Lake Argyle (answer to the previous question). Google map search shows a main attraction is 'The Big Crocodile' (i.e. living dinosaur). The town of Wyndham is not very far from Lake Argyle (answer to the previous question). Google map search shows a main attraction is 'The Big Crocodile' (i.e. living dinosaur). However this is not the flag. Also this record https://abr.business.gov.au/AbnHistory/View/13433162250 does not give the flag.
+
+Update: The flag is in fact simply FLAG{thorley}- simply name of the store! not the literal owner.
+
+Flag: flag{thorley}
