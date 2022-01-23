@@ -438,3 +438,8 @@ Solution: The town of Wyndham is not very far from Lake Argyle (answer to the pr
 Update: The flag is in fact simply FLAG{thorley}- simply name of the store! not the literal owner.
 
 Flag: flag{thorley}
+
+## Number Stations and Locations 4
+
+Category: OSINT
+Points: 350
